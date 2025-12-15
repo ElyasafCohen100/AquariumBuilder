@@ -1,4 +1,7 @@
 
+using AquariumBuilder.Backend.Services.Interfaces;
+using AquariumBuilder.Backend.Services;
+
 namespace AquariumBuilder.Backend
 {
     public class Program
@@ -9,10 +12,10 @@ namespace AquariumBuilder.Backend
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddScoped<IAquariumService, AquariumService>();
 
             var app = builder.Build();
 
