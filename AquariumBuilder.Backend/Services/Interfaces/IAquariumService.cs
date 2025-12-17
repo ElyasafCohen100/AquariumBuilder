@@ -1,4 +1,4 @@
-﻿using AquariumBuilder.Backend.Dtos;
+﻿using AquariumBuilder.Backend.Dtos.Aquarium;
 
 
 namespace AquariumBuilder.Backend.Services.Interfaces

@@ -1,6 +1,7 @@
 
+using System.Text.Json.Serialization;
+using AquariumBuilder.Backend.Services.Aquarium;
 using AquariumBuilder.Backend.Services.Interfaces;
-using AquariumBuilder.Backend.Services;
 
 namespace AquariumBuilder.Backend
 {
@@ -13,7 +14,17 @@ namespace AquariumBuilder.Backend
             // Add services to the container.
 
             builder.Services.AddSwaggerGen();
-            builder.Services.AddControllers();
+            //builder.Services.AddControllers();
+
+            builder.Services
+                .AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(
+                    new JsonStringEnumConverter()
+                    );
+                });
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddScoped<IAquariumService, AquariumService>();
 
