@@ -1,5 +1,6 @@
 
 using System.Text.Json.Serialization;
+using AquariumBuilder.Backend.Services.Fish;
 using AquariumBuilder.Backend.Services.Aquarium;
 using AquariumBuilder.Backend.Services.Interfaces;
 
@@ -11,11 +12,10 @@ namespace AquariumBuilder.Backend
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
 
             builder.Services.AddSwaggerGen();
-            //builder.Services.AddControllers();
 
+            // ===== to enable enum as string in the json responses ===== //
             builder.Services
                 .AddControllers()
                 .AddJsonOptions(options =>
@@ -25,12 +25,16 @@ namespace AquariumBuilder.Backend
                     );
                 });
 
+            // ====== for the controllers to work with the servers ====== //
+
+            // === Dependency Injection === //
             builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddScoped<IFishService, FishService>();
             builder.Services.AddScoped<IAquariumService, AquariumService>();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // ========= Configure the HTTP request pipeline ========= //
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -38,12 +42,9 @@ namespace AquariumBuilder.Backend
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
+          
             app.Run();
         }
     }

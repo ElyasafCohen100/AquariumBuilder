@@ -1,8 +1,7 @@
 ﻿using AquariumBuilder.Backend.Enums;
 using AquariumBuilder.Backend.Dtos.Aquarium;
-using AquariumBuilder.Backend.Services.Interfaces;
 using AquariumBuilder.Backend.Models.Aquarium;
-
+using AquariumBuilder.Backend.Services.Interfaces;
 
 
 namespace AquariumBuilder.Backend.Services.Aquarium
@@ -20,8 +19,7 @@ namespace AquariumBuilder.Backend.Services.Aquarium
             };
         }
 
-
-
+ 
         public AquariumStatusDto GetStatus()
         {
             AquariumModel aquarium = GetAquariumModel();

@@ -4,7 +4,7 @@ using AquariumBuilder.Backend.Dtos.Aquarium;
 using AquariumBuilder.Backend.Services.Interfaces;
 
 
-namespace AquariumBuilder.Backend.Controllers
+namespace AquariumBuilder.Backend.Controllers.Aquarium
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -17,16 +17,16 @@ namespace AquariumBuilder.Backend.Controllers
         // ========== constructor ========== //
         public AquariumController(IAquariumService aquariumService)
         {
-            this._aquariumService = aquariumService;
+            _aquariumService = aquariumService;
         }
 
 
         // ================================= the Endpoints ================================= //
 
-        [HttpGet("status")] // Descriptive
+        [HttpGet("status")] // Descriptive (עסקי מרכזי endpoint) 
         public ActionResult<AquariumStatusDto> GetStatus()
         {
-            AquariumStatusDto status = this._aquariumService.GetStatus();
+            AquariumStatusDto status = _aquariumService.GetStatus();
 
             if (!status.IsReady)
             {
@@ -35,10 +35,10 @@ namespace AquariumBuilder.Backend.Controllers
             return Ok(status);
         }
 
-        [HttpGet("health")] // Infrastructure
+        [HttpGet("health")] // Infrastructure (עסקי תשתיתי endpoint) 
         public ActionResult<AquariumHealthDto> GetHealth()
         {
-            AquariumStatusDto status = this._aquariumService.GetStatus();
+            AquariumStatusDto status = _aquariumService.GetStatus();
            
             return Ok(new AquariumHealthDto()
             {
@@ -47,15 +47,40 @@ namespace AquariumBuilder.Backend.Controllers
             });
         }
 
-        [HttpGet("warnings")] // Informational
+        [HttpGet("warnings")] // Informational (מידע endpoint) 
         public ActionResult<List<AquariumWarningsDto>> GetWarnings()
         {
-            AquariumStatusDto status = this._aquariumService.GetStatus();
+            AquariumStatusDto status = _aquariumService.GetStatus();
             return Ok(new AquariumWarningsDto()
             {
                 Count = status.Warnings.Count,
                 Warnings = status.Warnings
             });
+        }
+
+
+        [HttpGet("recommendations")] // Informational (מידע endpoint) 
+        public ActionResult<List<AquariumRecommendationsDto>> GetRecommendations()
+        {
+            AquariumStatusDto status= _aquariumService.GetStatus();
+            return Ok(new AquariumWarningsDto()
+            {
+                Count = status.Recommendations.Count,
+                Warnings = status.Recommendations
+            });
+                
+        }
+
+        [HttpGet("summary")]
+        public ActionResult<AquariumSummaryDto> Getsummary()
+        {
+            AquariumStatusDto status = _aquariumService.GetStatus();
+            return Ok(new AquariumSummaryDto()
+            {
+                OverallStatus = status.OverallStatus,
+                StatusMessage = status.StatusMessage,
+                WarningCount = status.Warnings.Count
+            }); 
         }
     }
 }
