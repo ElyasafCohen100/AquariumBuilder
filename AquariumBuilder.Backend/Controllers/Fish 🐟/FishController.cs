@@ -4,7 +4,7 @@ using AquariumBuilder.Backend.Dtos.Fish;
 using AquariumBuilder.Backend.Services.Interfaces;
 using System.Security.Cryptography.X509Certificates;
 
-namespace AquariumBuilder.Backend.Controllers.Fish___
+namespace AquariumBuilder.Backend.Controllers.Fish
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -28,18 +28,44 @@ namespace AquariumBuilder.Backend.Controllers.Fish___
             return Ok(fishList);
         }
 
+        [HttpGet("{id}")] // to get a fish by id
+        public ActionResult<FishDto>GetFishById(int id)
+        {
+            FishDto fishById = this._fishService.GetFishById(id);
+
+            if(fishById== null)
+            {
+                return NotFound();
+            }
+            return Ok(fishById);
+        }
+
         [HttpPost] // to buy a fish
         public IActionResult CreateFish([FromBody] CreateFishDto createFishDto)
         {
             this._fishService.CreateFish(createFishDto);
-            return Ok();
+            return Ok(new { message = "Fish created successfully 🐠" });
         }
 
         [HttpPut("{id}")] // to update fish info
         public IActionResult UpdateFish(int id, [FromBody] UpdateFishDto updateFishDto)
         {
             this._fishService.UpdateFish(id, updateFishDto);
-            return NoContent();
+            //return NoContent();
+            return Ok(new { message = "Fish updated successfully 🐠" });
+        }
+
+        [HttpDelete("{id}")] // to delete the fish
+        public IActionResult DeleteFish(int id)
+        {
+            bool fishToDelete = this._fishService.DeleteFishById(id);
+
+            if (!fishToDelete)
+            {
+                return NotFound();   
+            }
+            //return NoContent();
+            return Ok(new { message = "Fish deleted successfully 🐠" });
         }
     }
 }

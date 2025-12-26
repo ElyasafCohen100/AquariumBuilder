@@ -8,14 +8,17 @@ namespace AquariumBuilder.Backend.Services.Fish
 {
     public class FishService : IFishService
     {
-
-        private readonly List<FishDto> _fishList = new List<FishDto>();
+        private static readonly List<FishDto> _fishList = new List<FishDto>();
 
         public List<FishDto> GetAllFish()
         {
-            return this._fishList;
+            return _fishList;
         }
 
+        public FishDto GetFishById(int id)
+        {
+            return _fishList.FirstOrDefault(f => f.Id == id);
+        }
 
         public void CreateFish(CreateFishDto createFishDto)
         {
@@ -26,13 +29,12 @@ namespace AquariumBuilder.Backend.Services.Fish
                 AgeInDays = createFishDto.AgeInDays,
             };
 
-            this._fishList.Add(newFish);
+            _fishList.Add(newFish);
         }
-
 
         public void UpdateFish(int id, UpdateFishDto updateFishDto)
         {
-            FishDto? fishToUpdate = this._fishList.FirstOrDefault(f => f.Id == id);  
+            FishDto? fishToUpdate = _fishList.FirstOrDefault(f => f.Id == id);  
                
             if(fishToUpdate == null)
             {
@@ -43,6 +45,19 @@ namespace AquariumBuilder.Backend.Services.Fish
             fishToUpdate.isAlive = updateFishDto.isAlive;
             fishToUpdate.AgeInDays = updateFishDto.AgeInDays;
             fishToUpdate.HealthStatus = updateFishDto.HealthStatus;
+        }
+
+        public bool DeleteFishById(int id)
+        {
+            FishDto? fishToDelete = _fishList.FirstOrDefault(f => f.Id == id);
+            
+            if(fishToDelete == null)
+            {
+                return false;
+            }
+
+            _fishList.Remove(fishToDelete);
+            return true;
         }
     }
 }

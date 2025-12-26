@@ -19,7 +19,6 @@ namespace AquariumBuilder.Backend.Services.Aquarium
             };
         }
 
- 
         public AquariumStatusDto GetStatus()
         {
             AquariumModel aquarium = GetAquariumModel();
